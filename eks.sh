@@ -1,10 +1,10 @@
 #!/bin/bash
-`aws ec2 describe-regions --region us-east-1 --output text | cut -f4 > region.text`
-region_count=$(cat region.text|wc -l)
+`aws ec2 describe-regions --region us-east-1 --output text | cut -f4 > region.txt`
+region_count=$(cat region.txt|wc -l)
 for (( i=1; i<=$region_count; i++ ))
 do
-    region=$(sed -n $i'p' region.text)
-    aws eks list-clusters --region $region --output text | grep - clu > /dev/null 2>&1
+    region=$(sed -n $i'p' region.txt)
+    aws eks list-clusters --region $region --output text | grep -i clu > /dev/null 2>&1
     if [ $? == 0 ]
     then
         echo " "
@@ -13,4 +13,5 @@ do
         echo " "
     fi
 done
+rm -rf region.txt
 
